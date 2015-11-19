@@ -24,6 +24,7 @@ clean:
 	$(RM) gen
 install: sorting gen
 	mkdir -p $(LOCATION)
-	install -c bfc $(LOCATION)
+	install -c sorting $(LOCATION)
+	install -c gen $(LOCATION)
 doc:
 	doxygen Doxyfile

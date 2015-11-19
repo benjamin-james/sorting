@@ -8,6 +8,7 @@ int main(int argc, char **argv)
 {
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s numbers\n", *argv);
+		return 1;
 	}
 	srand(time(NULL));
 	int fd;

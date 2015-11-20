@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <inttypes.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -10,7 +9,6 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Usage: %s numbers\n", *argv);
 		return 1;
 	}
-	srand(time(NULL));
 	int fd;
 	if ((fd = open("/dev/urandom", O_RDONLY)) == -1) {
 		perror("Could not open /dev/urandom");

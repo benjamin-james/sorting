@@ -27,45 +27,28 @@ int timeval_diff(struct timeval start, struct timeval end, struct timeval *diff)
 	diff->tv_usec = end.tv_usec - start.tv_usec;
 	return end.tv_sec < start.tv_sec;
 }
-int do_time(int (*sort)(uint64_t *array, size_t size), uint64_t *array, size_t size)
+int get_clock(struct timeval *_timeval, struct rusage *_rusage)
 {
-	struct timeval start_timeval, end_timeval, diff_real, diff_user, diff_sys;
-	struct rusage start_rusage, end_rusage;
+	if (gettimeofday(_timeval, NULL) < 0) {
+		perror("gettimeofday: ");
+		return -1;
+	}
+	if (getrusage(RUSAGE_SELF, _rusage) < 0) {
+		perror("getrusage: ");
+		return -1;
+	}
+	return 0;
+}
+int dup_array(const uint64_t *array, size_t size, uint64_t **ret_array)
+{
 	uint64_t *temp_array = malloc(sizeof *array * size);
+	if (temp_array == NULL) {
+		return -1;
+	}
 	memcpy(temp_array, array, sizeof *array * size);
-	if (gettimeofday(&start_timeval, NULL) < 0) {
-		perror("gettimeofday: ");
-		return -1;
+	if (ret_array) {
+		*ret_array = temp_array;
 	}
-	if (getrusage(RUSAGE_SELF, &start_rusage) < 0) {
-		perror("getrusage: ");
-		return -1;
-	}
-	int ret = sort(temp_array, size);
-	if (ret < 0) {
-		return ret;
-	}
-	if (gettimeofday(&end_timeval, NULL) < 0) {
-		perror("gettimeofday: ");
-		return -1;
-	}
-	if (getrusage(RUSAGE_SELF, &end_rusage) < 0) {
-		perror("getrusage: ");
-		return -1;
-	}
-#ifdef DEBUG
-	size_t i;
-	for (i = 0; i < size; i++) {
-		fprintf(stderr, "%" PRIu64 "\n", temp_array[i]);
-	}
-#endif
-	free(temp_array);
-	timeval_diff(start_timeval, end_timeval, &diff_real);
-	timeval_diff(start_rusage.ru_utime, end_rusage.ru_utime, &diff_user);
-	timeval_diff(start_rusage.ru_stime, end_rusage.ru_stime, &diff_sys);
-	printf("real:\t %ld.%.06ld\n", (long int) diff_real.tv_sec, (long int) diff_real.tv_usec);
-	printf("user:\t %ld.%.06ld\n", (long int) diff_user.tv_sec, (long int) diff_user.tv_usec);
-	printf("sys:\t %ld.%.06ld\n", (long int) diff_sys.tv_sec, (long int) diff_sys.tv_usec);
 	return 0;
 }
 

@@ -1,4 +1,3 @@
-#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +6,8 @@
 #include <sys/time.h>
 #include <inttypes.h>
 #include <unistd.h>
+
+#include "util.h"
 
 int timeval_diff(struct timeval start, struct timeval end, struct timeval *diff)
 {
@@ -87,3 +88,11 @@ int load_numbers(const char *filename, uint64_t **ret, size_t *ret_len)
 	return 0;
 }
 
+int print_array(FILE *fp, const uint64_t *array, size_t size)
+{
+	size_t i;
+	for (i = 0; i < size; i++) {
+		fprintf(fp, "%" PRIu64 "\n", array[i]);
+	}
+	return 0;
+}

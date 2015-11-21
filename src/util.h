@@ -1,6 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdio.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <sys/time.h>
@@ -13,4 +14,5 @@ int get_clock(struct timeval *end_timeval, struct rusage *start_rusage);
 
 int dup_array(const uint64_t *array, size_t size, uint64_t **ret_array);
 
+int print_array(FILE *fp, const uint64_t *array, size_t size);
 #endif

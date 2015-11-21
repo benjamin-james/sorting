@@ -1,6 +1,7 @@
 CC = gcc
-CFLAGS += -W -Wall -g3 -ggdb -O2
-SORTING_SOURCES = build/util.o build/main.o
+CPPFLAGS += -DDEBUG
+CFLAGS += -W -Wall -g3 -ggdb -O2 -std=gnu89
+SORTING_SOURCES = build/util.o build/main.o build/sorting.o
 GEN_SOURCES = build/generate.o
 DESTDIR = /
 PREFIX = /usr/local
@@ -14,7 +15,7 @@ gen: $(GEN_SOURCES)
 	$(CC) $(CFLAGS) $(GEN_SOURCES) -o $@
 
 build/%.o: src/%.c build
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 build:
 	mkdir build
 clean:

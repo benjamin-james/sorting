@@ -1,6 +1,36 @@
 #include <stdlib.h>
 #include "sorting.h"
 
+int sift_down(intmax_t *array, intptr_t start, intptr_t end)
+{
+	intptr_t root = start;
+	while (root * 2 + 1 < end) {
+		intptr_t child = 2 * root + 1;
+		if (child + 1 < end && array[child] < array[child+1]) {
+			child++;
+		}
+		if (array[root] < array[child]) {
+			SWAP(intmax_t, array[child], array[root]);
+			root = child;
+		} else {
+			break;
+		}
+	}
+	return 0;
+}
+
+int heapsort(intmax_t *array, size_t size)
+{
+	intptr_t start, end;
+	for (start = (size - 2)/2; start >= 0; start--) {
+		sift_down(array, start, size);
+	}
+	for (end = size - 1; end > 0; end--) {
+		SWAP(intmax_t, array[end], array[0]);
+		sift_down(array, 0, end);
+	}
+	return 0;
+}
 int first_pivot(const intmax_t *array, size_t begin, size_t end)
 {
 	return begin;
@@ -28,9 +58,7 @@ int quicksort(intmax_t *array, size_t begin, size_t end, int (*choose_pivot)(con
 			right--;
 		}
 		if (left <= right) {
-			intmax_t temp = array[left];
-			array[left] = array[right];
-			array[right] = temp;
+			SWAP(intmax_t, array[left], array[right]);
 			left++;
 			right--;
 		}

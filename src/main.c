@@ -6,6 +6,26 @@
 #include "util.h"
 #include "sorting.h"
 
+int test_heapsort(const intmax_t *orig_array, size_t size, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff) {
+	intmax_t *array = NULL;
+	struct timeval start_tv, end_tv;
+	struct rusage start_ru, end_ru;
+	dup_array(orig_array, size, &array);
+	get_clock(&start_tv, &start_ru);
+	heapsort(array, size);
+	get_clock(&end_tv, &end_ru);
+       	timeval_diff(start_tv, end_tv, real_diff);
+	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
+	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+#ifdef DEBUG
+	print_array(stdout, array, size);
+#endif
+	if (array) {
+		free(array);
+	}
+	return 0;
+}
+
 int test_quicksort(const intmax_t *orig_array, size_t size, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff) {
 	intmax_t *array = NULL;
 	struct timeval start_tv, end_tv;
@@ -125,7 +145,7 @@ int main(int argc, char **argv)
 	}
 	load_numbers(argv[1], &array, &len);
 	//test_hybrid_sort(array, len, 7, &real_diff, &user_diff, &sys_diff);
-	test_quicksort(array, len, &real_diff, &user_diff, &sys_diff);
+	test_heapsort(array, len, &real_diff, &user_diff, &sys_diff);
 	printf("real:\t%ld.%.06ld\n", real_diff.tv_sec, real_diff.tv_usec);
 	printf("user:\t%ld.%.06ld\n", user_diff.tv_sec, user_diff.tv_usec);
 	printf("sys:\t%ld.%.06ld\n", sys_diff.tv_sec, sys_diff.tv_usec);

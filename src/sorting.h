@@ -4,6 +4,15 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifndef SWAP
+#define SWAP(type, r, s) \
+	do { \
+		type t = r; \
+		r = s; \
+		s = t; \
+	} while (0);
+#endif
+
 int insertion_sort(intmax_t *array, size_t size);
 int bubble_sort(intmax_t *array, size_t size);
 int merge_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer);

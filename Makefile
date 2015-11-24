@@ -1,8 +1,8 @@
 CC = gcc
-CPPFLAGS += -DDEBUG
-CFLAGS += -W -Wall -g3 -ggdb -O2 -std=gnu99
-SORTING_SOURCES = build/util.o build/main.o build/sorting.o build/test.o
-GEN_SOURCES = build/generate.o
+CFLAGS += -W -Wall -ggdb3 -O2 -std=gnu99
+LDFLAGS += -ggdb3 -O2
+SORTING_SOURCES = util.o main.o sorting.o test.o
+GEN_SOURCES = generate.o
 DESTDIR = /
 PREFIX = /usr/local
 
@@ -10,14 +10,11 @@ LOCATION = $(addprefix $(DESTDIR), $(addprefix $(PREFIX), /bin))
 all: build sorting gen
 
 sorting: $(SORTING_SOURCES)
-	$(CC) $(CFLAGS) $(SORTING_SOURCES) -o $@
+	$(CC) $(LDFLAGS) $^ -o $@
 gen: $(GEN_SOURCES)
-	$(CC) $(CFLAGS) $(GEN_SOURCES) -o $@
-
-build/%.o: src/%.c build
+	$(CC) $(LDFLAGS) $^ -o $@
+%.o: src/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-build:
-	mkdir build
 clean:
 	$(RM) $(SORTING_SOURCES)
 	$(RM) $(GEN_SOURCES)

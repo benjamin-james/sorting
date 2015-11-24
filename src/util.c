@@ -40,9 +40,9 @@ int get_clock(struct timeval *_timeval, struct rusage *_rusage)
 	}
 	return 0;
 }
-int dup_array(const uint64_t *array, size_t size, uint64_t **ret_array)
+int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array)
 {
-	uint64_t *temp_array = malloc(sizeof *array * size);
+	intmax_t *temp_array = malloc(sizeof *array * size);
 	if (temp_array == NULL) {
 		return -1;
 	}
@@ -53,12 +53,12 @@ int dup_array(const uint64_t *array, size_t size, uint64_t **ret_array)
 	return 0;
 }
 
-int load_numbers(const char *filename, uint64_t **ret, size_t *ret_len)
+int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t read = 0;
-	uint64_t *array = malloc(sizeof *array);
+	intmax_t *array = malloc(sizeof *array);
 	size_t arr_len = 0;
 	size_t arr_alloc = 1;
 	FILE *fp = fopen(filename, "r");
@@ -68,12 +68,12 @@ int load_numbers(const char *filename, uint64_t **ret, size_t *ret_len)
 	while ((read = getline(&line, &len, fp)) != -1) {
 		if (arr_len == arr_alloc) {
 			arr_alloc *= 2;
-			uint64_t *tmp = realloc(array, sizeof *array * arr_alloc);
+			intmax_t *tmp = realloc(array, sizeof *array * arr_alloc);
 			if (tmp != NULL) {
 				array = tmp;
 			}
 		}
-		array[arr_len++] = (uint64_t)strtoll(line, NULL, 10);
+		array[arr_len++] = (intmax_t)strtoll(line, NULL, 10);
 	}
 	fclose(fp);
 	if (line) {
@@ -88,11 +88,11 @@ int load_numbers(const char *filename, uint64_t **ret, size_t *ret_len)
 	return 0;
 }
 
-int print_array(FILE *fp, const uint64_t *array, size_t size)
+int print_array(FILE *fp, const intmax_t *array, size_t size)
 {
 	size_t i;
 	for (i = 0; i < size; i++) {
-		fprintf(fp, "%" PRIu64 "\n", array[i]);
+		fprintf(fp, "%" PRIdMAX "\n", array[i]);
 	}
 	return 0;
 }

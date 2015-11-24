@@ -8,11 +8,11 @@
 #include <sys/resource.h>
 
 int timeval_diff(struct timeval start, struct timeval end, struct timeval *diff);
-int load_numbers(const char *filename, uint64_t **ret, size_t *ret_len);
+int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len);
 
 int get_clock(struct timeval *end_timeval, struct rusage *start_rusage);
 
-int dup_array(const uint64_t *array, size_t size, uint64_t **ret_array);
+int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array);
 
-int print_array(FILE *fp, const uint64_t *array, size_t size);
+int print_array(FILE *fp, const intmax_t *array, size_t size);
 #endif

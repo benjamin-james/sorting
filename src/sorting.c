@@ -1,9 +1,49 @@
+#include <stdlib.h>
 #include "sorting.h"
 
-int insertion_sort(uint64_t *array, size_t size)
+int first_pivot(const intmax_t *array, size_t begin, size_t end)
+{
+	return begin;
+}
+
+int random_pivot(const intmax_t *array, size_t begin, size_t end)
+{
+	return rand() % end + begin;
+}
+
+int quicksort(intmax_t *array, size_t begin, size_t end, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end))
+{
+	if (begin >= end) {
+		return 0;
+	}
+	size_t pivot_index = choose_pivot(array, begin, end);
+	intmax_t pivot = array[pivot_index];
+	size_t left = begin;
+	size_t right = end;
+	while (left <= right) {
+		while (array[left] < pivot) {
+			left++;
+		}
+		while (array[right] > pivot) {
+			right--;
+		}
+		if (left <= right) {
+			intmax_t temp = array[left];
+			array[left] = array[right];
+			array[right] = temp;
+			left++;
+			right--;
+		}
+	}
+	quicksort(array, begin, pivot_index, choose_pivot);
+	quicksort(array, pivot_index + 1, end, choose_pivot);
+	return 0;
+}
+
+int insertion_sort(intmax_t *array, size_t size)
 {
 	size_t i, j;
-	uint64_t temp;
+	intmax_t temp;
 	for (i = 1; i < size; i++) {
 		temp = array[i];
 		for (j = i; j > 0 && temp < array[j - 1]; j--) {
@@ -13,7 +53,8 @@ int insertion_sort(uint64_t *array, size_t size)
 	}
 	return 0;
 }
-int bubble_sort(uint64_t *array, size_t size)
+
+int bubble_sort(intmax_t *array, size_t size)
 {
 	int i, j, swapped;
 	for (i = (int)size - 1; i >= 0; i--) {
@@ -22,7 +63,7 @@ int bubble_sort(uint64_t *array, size_t size)
 			if (array[j] <= array[j + 1]) {
 				continue;
 			}
-			uint64_t temp = array[j];
+			intmax_t temp = array[j];
 			array[j] = array[j + 1];
 			array[j + 1] = temp;
 			swapped = 1;
@@ -36,7 +77,7 @@ int bubble_sort(uint64_t *array, size_t size)
 	return 0;
 }
 
-int merge(const uint64_t *array, size_t begin, size_t middle, size_t end, uint64_t *buffer)
+int merge(const intmax_t *array, size_t begin, size_t middle, size_t end, intmax_t *buffer)
 {
 	size_t i, left = begin, right = middle;
 	for (i = begin; i < end; i++) {
@@ -48,7 +89,8 @@ int merge(const uint64_t *array, size_t begin, size_t middle, size_t end, uint64
 	}
 	return 0;
 }
-int merge_sort(uint64_t *array, size_t begin, size_t end, uint64_t *buffer)
+
+int merge_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer)
 {
 	size_t middle = (end - begin) / 2;
 	if (end - begin < 2) {
@@ -62,7 +104,7 @@ int merge_sort(uint64_t *array, size_t begin, size_t end, uint64_t *buffer)
 	return 0;
 }
 
-int hybrid_sort(uint64_t *array, size_t begin, size_t end, uint64_t *buffer, int cutoff)
+int hybrid_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer, int cutoff)
 {
 	size_t middle = (end + begin) / 2;
 	if (end - begin <= (size_t)cutoff) {

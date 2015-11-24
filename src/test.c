@@ -67,9 +67,12 @@ int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct t
 	struct timeval start_tv, end_tv;
 	struct rusage start_ru, end_ru;
 	dup_array(orig_array, size, &array);
-	dup_array(orig_array, size, &cpy_array);
 	get_clock(&start_tv, &start_ru);
+	dup_array(orig_array, size, &cpy_array);
 	merge_sort(array, 0, size, cpy_array);
+	if (cpy_array) {
+		free(cpy_array);
+	}
 	get_clock(&end_tv, &end_ru);
 	timeval_diff(start_tv, end_tv, real_diff);
 	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
@@ -79,9 +82,6 @@ int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct t
 	}
 	if (array) {
 		free(array);
-	}
-	if (cpy_array) {
-		free(cpy_array);
 	}
 	return 0;
 }
@@ -131,9 +131,12 @@ int test_hybrid_sort(const intmax_t *orig_array, size_t size, int cutoff, bool p
 	struct timeval start_tv, end_tv;
 	struct rusage start_ru, end_ru;
 	dup_array(orig_array, size, &array);
-	dup_array(orig_array, size, &cpy_array);
 	get_clock(&start_tv, &start_ru);
+	dup_array(orig_array, size, &cpy_array);
 	hybrid_sort(array, 0, size, cpy_array, cutoff);
+	if (cpy_array) {
+		free(cpy_array);
+	}
 	get_clock(&end_tv, &end_ru);
 	timeval_diff(start_tv, end_tv, real_diff);
 	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
@@ -143,9 +146,6 @@ int test_hybrid_sort(const intmax_t *orig_array, size_t size, int cutoff, bool p
 	}
 	if (array) {
 		free(array);
-	}
-	if (cpy_array) {
-		free(cpy_array);
 	}
 	return 0;
 }

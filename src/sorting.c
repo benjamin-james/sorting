@@ -1,5 +1,25 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include "sorting.h"
+
+#include "util.h"
+
+
+
+int treesort(const intmax_t *array, size_t array_size, struct tree **tree)
+{
+	size_t i;
+	int ret = 0;
+	struct tree *t = NULL;
+	tree_new(&t);
+	for (i = 0; ret == 0 && i < array_size; i++) {
+		ret = tree_insert(t, array[i]);
+	}
+	if (tree) {
+		*tree = t;
+	}
+	return ret;
+}
 
 int sift_down(intmax_t *array, intptr_t start, intptr_t end)
 {

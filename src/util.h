@@ -15,4 +15,6 @@ int get_clock(struct timeval *end_timeval, struct rusage *start_rusage);
 int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array);
 
 int print_array(FILE *fp, const intmax_t *array, size_t size);
+
+int print_bst(FILE *fp, const intmax_t *array, size_t size);
 #endif

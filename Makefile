@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS += -W -Wall -ggdb3 -O2 -std=gnu99
 LDFLAGS += -ggdb3 -O2
-SORTING_SOURCES = util.o main.o sorting.o test.o
+SORTING_SOURCES = util.o main.o sorting.o test.o tree.o
 GEN_SOURCES = generate.o
 DESTDIR = /
 PREFIX = /usr/local

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	load_numbers(argv[1], &array, &len);
-	test_heapsort(array, len, 1, &real_diff, &user_diff, &sys_diff);
+	test_treesort(array, len, 1, &real_diff, &user_diff, &sys_diff);
 	printf("real:\t%ld.%.06ld\n", real_diff.tv_sec, real_diff.tv_usec);
 	printf("user:\t%ld.%.06ld\n", user_diff.tv_sec, user_diff.tv_usec);
 	printf("sys:\t%ld.%.06ld\n", sys_diff.tv_sec, sys_diff.tv_usec);

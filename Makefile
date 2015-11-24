@@ -1,7 +1,7 @@
 CC = gcc
 CPPFLAGS += -DDEBUG
-CFLAGS += -W -Wall -g3 -ggdb -O2 -std=gnu89
-SORTING_SOURCES = build/util.o build/main.o build/sorting.o
+CFLAGS += -W -Wall -g3 -ggdb -O2 -std=gnu99
+SORTING_SOURCES = build/util.o build/main.o build/sorting.o build/test.o
 GEN_SOURCES = build/generate.o
 DESTDIR = /
 PREFIX = /usr/local

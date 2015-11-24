@@ -73,7 +73,7 @@ int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len)
 				array = tmp;
 			}
 		}
-		array[arr_len++] = (intmax_t)strtoll(line, NULL, 10);
+		array[arr_len++] = strtoimax(line, NULL, 10);
 	}
 	fclose(fp);
 	if (line) {

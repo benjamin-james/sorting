@@ -16,14 +16,14 @@ int main(int argc, char **argv)
 	}
 	long long i, num = strtoll(argv[1], NULL, 10);
 	for (i = 0; i < num; i++) {
-		uint64_t tmp = 0;
-		while (tmp == 0 || tmp >= INT64_MAX) {
+	        intmax_t tmp = 0;
+		while (tmp == 0 || tmp >= INTMAX_MAX) {
 			if (read(fd, &tmp, sizeof tmp) < 0) {
 				perror("read");
 				return 1;
 			}
 		}
-		printf("%" PRIu64 "\n", tmp);
+		printf("%" PRIdMAX "\n", tmp);
 	}
 	close(fd);
 	return 0;

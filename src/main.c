@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-	size_t len = 10;
+	size_t len = 0;
 	intmax_t *array = NULL;
 	struct timeval real_diff, user_diff, sys_diff;
 	if (argc < 2) {

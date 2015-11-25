@@ -1,44 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <fcntl.h>
-#include <sys/resource.h>
-#include <sys/time.h>
+#include <time.h>
 #include <inttypes.h>
-#include <unistd.h>
 
 #include "util.h"
 
-int timeval_diff(struct timeval start, struct timeval end, struct timeval *diff)
+int timespec_diff(struct timespec start, struct timespec end, struct timespec *diff)
 {
 	if (diff == NULL) {
 		return -1;
 	}
-	if (end.tv_usec < start.tv_usec) {
-		time_t usec_in_sec = (start.tv_usec - end.tv_usec) / 1000000 + 1;
-		start.tv_usec -= 1000000 * usec_in_sec;
-		start.tv_sec += usec_in_sec;
+	if (end.tv_nsec < start.tv_nsec) {
+		long nsec_in_sec = (start.tv_nsec - end.tv_nsec) / 1000000000 + 1;
+		start.tv_nsec -= 1000000000 * nsec_in_sec;
+		start.tv_sec += nsec_in_sec;
 	}
-	if (end.tv_usec - start.tv_usec > 1000000) {
-		time_t usec_in_sec = (end.tv_usec - start.tv_usec) / 1000000;
-		start.tv_usec += 1000000 * usec_in_sec;
-		start.tv_sec -= usec_in_sec;
+	if (end.tv_nsec - start.tv_nsec > 1000000000) {
+		long nsec_in_sec = (end.tv_nsec - start.tv_nsec) / 1000000000;
+		start.tv_nsec += 1000000000 * nsec_in_sec;
+		start.tv_sec -= nsec_in_sec;
 	}
 	diff->tv_sec = end.tv_sec - start.tv_sec;
-	diff->tv_usec = end.tv_usec - start.tv_usec;
-	return end.tv_sec < start.tv_sec;
-}
-int get_clock(struct timeval *_timeval, struct rusage *_rusage)
-{
-	if (gettimeofday(_timeval, NULL) < 0) {
-		perror("gettimeofday: ");
-		return -1;
-	}
-	if (getrusage(RUSAGE_SELF, _rusage) < 0) {
-		perror("getrusage: ");
-		return -1;
-	}
+	diff->tv_nsec = end.tv_nsec - start.tv_nsec;
 	return 0;
+}
+int get_clock(struct timespec *ts)
+{
+	return clock_gettime(CLOCK_MONOTONIC, ts);
 }
 int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array)
 {

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "test.h"
 #include "util.h"
@@ -8,16 +9,15 @@ int main(int argc, char **argv)
 {
 	size_t len = 0;
 	intmax_t *array = NULL;
-	struct timeval real_diff, user_diff, sys_diff;
+	struct timespec diff;
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s filename\n", *argv);
 		return 1;
 	}
+	srand(time(NULL));
 	load_numbers(argv[1], &array, &len);
-	test_treesort(array, len, 1, &real_diff, &user_diff, &sys_diff);
-	printf("real:\t%ld.%.06ld\n", real_diff.tv_sec, real_diff.tv_usec);
-	printf("user:\t%ld.%.06ld\n", user_diff.tv_sec, user_diff.tv_usec);
-	printf("sys:\t%ld.%.06ld\n", sys_diff.tv_sec, sys_diff.tv_usec);
+	test_treesort(array, len, 1, &diff);
+	printf("time:\t%ld.%.09ld\n", diff.tv_sec, diff.tv_nsec);
 	free(array);
 
 	return 0;

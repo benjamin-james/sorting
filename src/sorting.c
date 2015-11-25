@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include "sorting.h"
 
-#include "util.h"
-
-
-
 int treesort(const intmax_t *array, size_t array_size, struct tree **tree)
 {
 	size_t i;
@@ -58,7 +54,7 @@ int first_pivot(const intmax_t *array, size_t begin, size_t end)
 
 int random_pivot(const intmax_t *array, size_t begin, size_t end)
 {
-	return rand() % end + begin;
+	return rand() % (end - begin) + begin;
 }
 
 int quicksort(intmax_t *array, size_t begin, size_t end, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end))
@@ -152,7 +148,7 @@ int merge_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer)
 	return 0;
 }
 
-int hybrid_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer, int cutoff)
+int hybrid_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer, intptr_t cutoff)
 {
 	size_t middle = (end + begin) / 2;
 	if (end - begin <= (size_t)cutoff) {

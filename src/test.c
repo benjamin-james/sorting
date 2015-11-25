@@ -4,16 +4,13 @@
 #include "test.h"
 #include "util.h"
 
-int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff) {
+int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff) {
 	struct tree *t;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
-	get_clock(&start_tv, &start_ru);
+	struct timespec start, end;
+	get_clock(&start);
 	treesort(orig_array, size, &t);
-	get_clock(&end_tv, &end_ru);
-       	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+       	timespec_diff(start, end, diff);
 	if (print) {
 		print_tree(stdout, t);
 	}
@@ -21,17 +18,15 @@ int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct ti
 	return 0;
 }
 
-int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff) {
+int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
+{
 	intmax_t *array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	heapsort(array, size);
-	get_clock(&end_tv, &end_ru);
-       	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+       	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}
@@ -41,17 +36,15 @@ int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct ti
 	return 0;
 }
 
-int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff) {
+int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
+{
 	intmax_t *array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	quicksort(array, 0, size-1, &first_pivot);
-	get_clock(&end_tv, &end_ru);
-       	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+       	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}
@@ -61,22 +54,19 @@ int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct t
 	return 0;
 }
 
-int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff)
+int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL, *cpy_array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	dup_array(orig_array, size, &cpy_array);
 	merge_sort(array, 0, size, cpy_array);
 	if (cpy_array) {
 		free(cpy_array);
 	}
-	get_clock(&end_tv, &end_ru);
-	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}
@@ -85,18 +75,15 @@ int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct t
 	}
 	return 0;
 }
-int test_insertion_sort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff)
+int test_insertion_sort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	insertion_sort(array, size);
-	get_clock(&end_tv, &end_ru);
-	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}
@@ -105,18 +92,15 @@ int test_insertion_sort(const intmax_t *orig_array, size_t size, bool print, str
 	}
 	return 0;
 }
-int test_bubble_sort(const intmax_t *orig_array, size_t size, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff)
+int test_bubble_sort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	bubble_sort(array, size);
-	get_clock(&end_tv, &end_ru);
-	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}
@@ -125,22 +109,19 @@ int test_bubble_sort(const intmax_t *orig_array, size_t size, bool print, struct
 	}
 	return 0;
 }
-int test_hybrid_sort(const intmax_t *orig_array, size_t size, int cutoff, bool print, struct timeval *real_diff, struct timeval *user_diff, struct timeval *sys_diff)
+int test_hybrid_sort(const intmax_t *orig_array, size_t size, int cutoff, bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL, *cpy_array = NULL;
-	struct timeval start_tv, end_tv;
-	struct rusage start_ru, end_ru;
+	struct timespec start, end;
 	dup_array(orig_array, size, &array);
-	get_clock(&start_tv, &start_ru);
+	get_clock(&start);
 	dup_array(orig_array, size, &cpy_array);
 	hybrid_sort(array, 0, size, cpy_array, cutoff);
 	if (cpy_array) {
 		free(cpy_array);
 	}
-	get_clock(&end_tv, &end_ru);
-	timeval_diff(start_tv, end_tv, real_diff);
-	timeval_diff(start_ru.ru_utime, end_ru.ru_utime, user_diff);
-	timeval_diff(start_ru.ru_stime, end_ru.ru_stime, sys_diff);
+	get_clock(&end);
+	timespec_diff(start, end, diff);
 	if (print) {
 		print_array(stdout, array, size);
 	}

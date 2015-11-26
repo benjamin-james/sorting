@@ -14,7 +14,7 @@ int print_help(void)
 	fprintf(stderr, "\n");
 	fprintf(stderr, "\t-v            prints the sorted array\n");
 	fprintf(stderr, "\t-q            omits printing the sorted array\n");
-	fprintf(stderr, "\t-f [filename] gets the filename of the list to sort (REQUIRED)\n");
+	fprintf(stderr, "\t-f [filename] gets the filename of the list to sort\n");
 	fprintf(stderr, "\t-h            print this message\n");
 	fprintf(stderr, "\n");
 	return 0;
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 		{0, 0, 0, 0}
 	};
 	srand(time(NULL));
-	while ((c = getopt_long(argc, argv, "vqhf:", long_options, &option_index)) != -1) {
+	while ((c = getopt_long(argc, argv, "vqhtnf:", long_options, &option_index)) != -1) {
 		switch (c) {
 		case 0:
 		case 1:
@@ -53,6 +53,12 @@ int main(int argc, char **argv)
 			break;
 		case 'q':
 			print = 0;
+			break;
+		case 't':
+			do_time = 1;
+			break;
+		case 'n':
+			do_time = 0;
 			break;
 		case 'h':
 		default:

@@ -54,7 +54,7 @@ int first_pivot(const intmax_t *array, size_t begin, size_t end)
 
 int random_pivot(const intmax_t *array, size_t begin, size_t end)
 {
-	return rand() % (end - begin) + begin;
+	return (rand() % (end - begin)) + begin;
 }
 
 int quicksort(intmax_t *array, size_t begin, size_t end, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end))

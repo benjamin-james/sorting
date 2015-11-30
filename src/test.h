@@ -11,7 +11,7 @@ int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct ti
 
 int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);
 
-int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);
+int test_quicksort(const intmax_t *orig_array, size_t size, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end), bool print, struct timespec *diff);
 
 int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);
 

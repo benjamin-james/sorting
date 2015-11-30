@@ -36,13 +36,13 @@ int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct ti
 	return 0;
 }
 
-int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
+int test_quicksort(const intmax_t *orig_array, size_t size, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end), bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL;
 	struct timespec start, end;
 	dup_array(orig_array, size, &array);
 	get_clock(&start);
-	quicksort(array, 0, size-1, &first_pivot);
+	quicksort(array, 0, size-1, choose_pivot);
 	get_clock(&end);
        	timespec_diff(start, end, diff);
 	if (print) {
@@ -53,7 +53,6 @@ int test_quicksort(const intmax_t *orig_array, size_t size, bool print, struct t
 	}
 	return 0;
 }
-
 int test_mergesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL, *cpy_array = NULL;

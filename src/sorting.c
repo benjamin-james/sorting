@@ -47,40 +47,38 @@ int heapsort(intmax_t *array, size_t size)
 	}
 	return 0;
 }
-int first_pivot(const intmax_t *array, size_t begin, size_t end)
+intptr_t first_pivot(const intmax_t *array, intptr_t begin, intptr_t end)
 {
 	return begin;
 }
 
-int random_pivot(const intmax_t *array, size_t begin, size_t end)
+intptr_t random_pivot(const intmax_t *array, intptr_t begin, intptr_t end)
 {
 	return (rand() % (end - begin)) + begin;
 }
 
-int quicksort(intmax_t *array, size_t begin, size_t end, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end))
+intptr_t partition(intmax_t *array, intptr_t left, intptr_t right, intptr_t pivot_index)
+{
+	SWAP(intmax_t, array[pivot_index], array[left]);
+	intptr_t first, last = left;
+	intmax_t pivot = array[left];
+	for (first = left + 1; first <= right; first++) {
+		if (array[first] < pivot) {
+			last++;
+			SWAP(intmax_t, array[last], array[first]);
+		}
+	}
+	SWAP(intmax_t, array[last], array[left]);
+	return last;
+}
+int quicksort(intmax_t *array, intptr_t begin, intptr_t end, intptr_t (*choose_pivot)(const intmax_t *array, intptr_t begin, intptr_t end))
 {
 	if (begin >= end) {
 		return 0;
 	}
-	size_t pivot_index = choose_pivot(array, begin, end);
-	intmax_t pivot = array[pivot_index];
-	size_t left = begin;
-	size_t right = end;
-	while (left <= right) {
-		while (array[left] < pivot) {
-			left++;
-		}
-		while (array[right] > pivot) {
-			right--;
-		}
-		if (left <= right) {
-			SWAP(intmax_t, array[left], array[right]);
-			left++;
-			right--;
-		}
-	}
-	quicksort(array, begin, pivot_index, choose_pivot);
-	quicksort(array, pivot_index + 1, end, choose_pivot);
+	intptr_t pivot = partition(array, begin, end, choose_pivot(array, begin, end));
+	quicksort(array, begin, pivot, choose_pivot);
+	quicksort(array, pivot + 1, end, choose_pivot);
 	return 0;
 }
 

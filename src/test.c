@@ -36,7 +36,7 @@ int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct ti
 	return 0;
 }
 
-int test_quicksort(const intmax_t *orig_array, size_t size, int (*choose_pivot)(const intmax_t *array, size_t begin, size_t end), bool print, struct timespec *diff)
+int test_quicksort(const intmax_t *orig_array, size_t size, intptr_t (*choose_pivot)(const intmax_t *array, intptr_t begin, intptr_t end), bool print, struct timespec *diff)
 {
 	intmax_t *array = NULL;
 	struct timespec start, end;

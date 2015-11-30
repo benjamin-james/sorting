@@ -16,7 +16,7 @@ int print_help(const char *program_name);
 
 int get_sorting_type(const char *arg, int *ret);
 
-int get_option(int character, int *sorting, char **input, bool *reg_pivot, intptr_t *cutoff, bool *print, bool *do_time, const char *program_name);
+int get_option(int character, int *sorting, bool *reg_pivot, intptr_t *cutoff, bool *print, bool *do_time, const char *program_name);
 
 int do_getopt(const int argc, char *const *argv, int *sorting, char **input, bool *reg_pivot, intptr_t *cutoff, bool *print, bool *do_time);
 

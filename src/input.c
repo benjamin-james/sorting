@@ -8,12 +8,11 @@
 
 int print_help(const char *program_name)
 {
-	fprintf(stderr, "Usage: %s [OPTIONS]\n", program_name);
+	fprintf(stderr, "Usage: %s [OPTIONS] [FILENAME]\n", program_name);
 	fprintf(stderr, "\n");
 	fprintf(stderr, "\t-h, --help     prints this message\n");
 	fprintf(stderr, "\t-v, --verbose  prints the sorted array (enabled by default)\n");
 	fprintf(stderr, "\t-q, --quiet    omits printing the sorted array\n");
-	fprintf(stderr, "\t-f, --file     specify the filename of the list to sort (default stdin)\n");
 	fprintf(stderr, "\t-s, --sort     specify the sort to be done, consisting of:\n");
 	fprintf(stderr, "\t                   quicksort, mergesort, bubblesort, insertion sort,\n");
 	fprintf(stderr, "\t                   treesort, heapsort, hybridsort (hybrid mergesort-insertion sort)\n");
@@ -53,8 +52,8 @@ bad:
 	return -1;
 }
 
-int get_option(int character, int *sorting, char **input, bool *reg_pivot, intptr_t *cutoff, bool *print, bool *do_time, const char *program_name)
-	{
+int get_option(int character, int *sorting, bool *reg_pivot, intptr_t *cutoff, bool *print, bool *do_time, const char *program_name)
+{
 	int ret = 0;
 	char *endptr = NULL;
 	long l = 0;
@@ -67,10 +66,6 @@ int get_option(int character, int *sorting, char **input, bool *reg_pivot, intpt
 		} else {
 			*cutoff = (intptr_t)l;
 		}
-		break;
-	}
-	case 'f': {
-		*input = optarg;
 		break;
 	}
 	case 'h': {
@@ -125,7 +120,6 @@ int do_getopt(const int argc, char *const *argv, int *sorting, char **input, boo
 	int ret = 0;
 	static struct option long_options[] = {
 		{"cutoff", required_argument, 0, 'c'},
-		{"file", required_argument, 0, 'f'},
 		{"help", no_argument, 0, 'h'},
 		{"no-time", no_argument, 0, 'n'},
 		{"pivot", required_argument, 0, 'p'},
@@ -136,7 +130,14 @@ int do_getopt(const int argc, char *const *argv, int *sorting, char **input, boo
 		{0, 0, 0, 0}
 	};
 	while (!ret && (c = getopt_long(argc, argv, "c:f:hnp:qs:tv", long_options, &option_index)) != -1) {
-		ret = get_option(c, sorting, input, reg_pivot, cutoff, print, do_time, *argv);
+		ret = get_option(c, sorting, reg_pivot, cutoff, print, do_time, *argv);
 	}
+	if (!ret && optind < argc) {
+		*input = argv[optind++];
+	}
+       	while (optind < argc) {
+			printf("Unrecognized option \"%s\"\n", argv[optind++]);
+			ret = -1;
+       	}
 	return ret;
 }

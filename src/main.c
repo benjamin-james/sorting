@@ -74,12 +74,9 @@ int do_sort(intmax_t *array, size_t len, int sort, intptr_t cutoff, bool reg_piv
 		ret = test_bubble_sort(array, len, print, diff);
 		break;
 	}
-	case HYBRID_SORT: {
-		ret = test_hybrid_sort(array, len, cutoff, print, diff);
-		break;
-	}
+	case HYBRID_SORT:
 	default:
-		ret = -1;
+		ret = test_hybrid_sort(array, len, cutoff, print, diff);
 		break;
 	}
 	return ret;

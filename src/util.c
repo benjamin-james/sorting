@@ -76,13 +76,15 @@ int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len)
 				array = tmp;
 			} else {
 				perror("realloc");
+				ret_val = -1;
+				break;
 			}
 		}
 
 		array[arr_len++] = strtoimax(line, &endptr, 10);
-		if (*endptr) {
+		if (*endptr && *endptr != '\n') {
 			remove_newline(line);
-			fprintf(stderr, "\"%s\" is not a valid integer\n", line);
+			fprintf(stderr, "\"%s\" is not a valid integer at \"%s\"\n", line, endptr);
 			ret_val = -1;
 			break;
 		}

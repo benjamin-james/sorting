@@ -6,9 +6,9 @@ SORTING_SOURCES = util.o main.o sorting.o test.o tree.o input.o
 GEN_SOURCES = generate.o
 DESTDIR = /
 PREFIX = /usr/local
-
+INSTALL = install -c
 LOCATION = $(addprefix $(DESTDIR), $(addprefix $(PREFIX), /bin))
-all: build sorting gen
+all: sorting gen
 
 sorting: $(SORTING_SOURCES)
 	$(CC) $(LDFLAGS) $^ -o $@
@@ -23,7 +23,7 @@ clean:
 	$(RM) gen
 install: sorting gen
 	mkdir -p $(LOCATION)
-	install -c sorting $(LOCATION)
-	install -c gen $(LOCATION)
+	$(INSTALL) sorting $(LOCATION)
+	$(INSTALL) gen $(LOCATION)
 doc:
 	doxygen Doxyfile

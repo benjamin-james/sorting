@@ -10,16 +10,23 @@
 #include "test.h"
 #include "util.h"
 
-#define PROGRAMNAME "sorting"
+static char *PROGRAMNAME = NULL;
 
 int print_help(void)
 {
-	fprintf(stderr, "Usage: %s -vqfh [filename]\n", PROGRAMNAME);
+	fprintf(stderr, "Usage: %s [OPTIONS]\n", PROGRAMNAME);
 	fprintf(stderr, "\n");
-	fprintf(stderr, "\t-v            prints the sorted array\n");
-	fprintf(stderr, "\t-q            omits printing the sorted array\n");
-	fprintf(stderr, "\t-f [filename] gets the filename of the list to sort\n");
-	fprintf(stderr, "\t-h            print this message\n");
+	fprintf(stderr, "\t-h, --help     prints this message\n");
+	fprintf(stderr, "\t-v, --verbose  prints the sorted array (enabled by default)\n");
+	fprintf(stderr, "\t-q, --quiet    omits printing the sorted array\n");
+	fprintf(stderr, "\t-f, --file     specify the filename of the list to sort (default stdin)\n");
+	fprintf(stderr, "\t-s, --sort     specify the sort to be done, consisting of:\n");
+	fprintf(stderr, "\t                   quicksort, mergesort, bubblesort, insertion sort,\n");
+	fprintf(stderr, "\t                   treesort, heapsort, hybridsort (hybrid mergesort-insertion sort)\n");
+	fprintf(stderr, "\t-t, --time     print the time it took to sort the array\n");
+	fprintf(stderr, "\t-n, --no-time  don't print the time it took to sort the array (default)\n");
+	fprintf(stderr, "\t-c, --cutoff   specify the cutoff in hybrid sort to switch from hybrid to insertion sort (default 1)\n");
+	fprintf(stderr, "\t-p, --pivot    specify whether the pivot in quicksort is \"first\" or \"random\" pivot element (default \"first\")\n");
 	fprintf(stderr, "\n");
 	return 0;
 }
@@ -63,6 +70,7 @@ int get_sorting(const char *arg, char **ret)
 	}
 	return r;
 }
+
 int main(int argc, char **argv)
 {
 	size_t len = 0;
@@ -76,6 +84,7 @@ int main(int argc, char **argv)
 	char default_input[] = "/dev/stdin";
 	char *input = default_input;
 	char *sort = NULL;
+	PROGRAMNAME = *argv;
 	static struct option long_options[] = {
 		{"verbose", no_argument, &print, 1},
 		{"quiet", no_argument, &print, 0},

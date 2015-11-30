@@ -6,6 +6,16 @@
 
 #include "util.h"
 
+int remove_newline(char *str)
+{
+	int len = strlen(str);
+	if (str[len - 1] == '\n') {
+		str[len - 1] = 0;
+		return 1;
+	}
+	return 0;
+}
+
 int timespec_diff(struct timespec start, struct timespec end, struct timespec *diff)
 {
 	if (diff == NULL) {
@@ -33,6 +43,7 @@ int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array)
 {
 	intmax_t *temp_array = malloc(sizeof *array * size);
 	if (temp_array == NULL) {
+		perror("malloc");
 		return -1;
 	}
 	memcpy(temp_array, array, sizeof *array * size);
@@ -45,24 +56,36 @@ int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array)
 int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len)
 {
 	char *line = NULL;
+	char *endptr = NULL;
 	size_t len = 0;
 	ssize_t read = 0;
 	intmax_t *array = malloc(sizeof *array);
 	size_t arr_len = 0;
 	size_t arr_alloc = 1;
+	int ret_val = 0;
 	FILE *fp = fopen(filename, "r");
 	if (fp == NULL) {
+		perror(filename);
 		return -1;
 	}
 	while ((read = getline(&line, &len, fp)) != -1) {
 		if (arr_len == arr_alloc) {
 			arr_alloc *= 2;
 			intmax_t *tmp = realloc(array, sizeof *array * arr_alloc);
-			if (tmp != NULL) {
+			if (tmp) {
 				array = tmp;
+			} else {
+				perror("realloc");
 			}
 		}
-		array[arr_len++] = strtoimax(line, NULL, 10);
+
+		array[arr_len++] = strtoimax(line, &endptr, 10);
+		if (*endptr) {
+			remove_newline(line);
+			fprintf(stderr, "\"%s\" is not a valid integer\n", line);
+			ret_val = -1;
+			break;
+		}
 	}
 	fclose(fp);
 	if (line) {
@@ -74,7 +97,7 @@ int load_numbers(const char *filename, intmax_t **ret, size_t *ret_len)
 	if (ret_len) {
 		*ret_len = arr_len;
 	}
-	return 0;
+	return ret_val;
 }
 
 int print_array(FILE *fp, const intmax_t *array, size_t size)

@@ -21,9 +21,10 @@ clean:
 	$(RM) $(GEN_SOURCES)
 	$(RM) sorting
 	$(RM) gen
-install: sorting gen
+install: sorting gen average.pl
 	mkdir -p $(LOCATION)
 	$(INSTALL) sorting $(LOCATION)
 	$(INSTALL) gen $(LOCATION)
+	$(INSTALL) average.pl $(LOCATION)
 doc:
 	doxygen Doxyfile

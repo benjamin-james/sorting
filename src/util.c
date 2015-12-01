@@ -37,7 +37,11 @@ int timespec_diff(struct timespec start, struct timespec end, struct timespec *d
 }
 int get_clock(struct timespec *ts)
 {
+#ifdef CLOCK_PROCESS_CPUTIME_ID
+	return clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ts);
+#else
 	return clock_gettime(CLOCK_MONOTONIC, ts);
+#endif
 }
 int dup_array(const intmax_t *array, size_t size, intmax_t **ret_array)
 {

@@ -13,13 +13,13 @@ int main(int argc, char **argv)
 {
 	intmax_t *array = NULL;
 	size_t len = 0;
-	int sorting = 0;
+	int ret, sorting = 0;
 	char default_input[] = "/dev/stdin";
 	char *input = default_input;
 	intptr_t cutoff = 1;
 	bool print = 1, do_time = 0, reg_pivot = 1;
 	struct timespec diff;
-	int ret = do_getopt(argc, argv, &sorting, &input, &reg_pivot, &cutoff, &print, &do_time);
+	ret = do_getopt(argc, argv, &sorting, &input, &reg_pivot, &cutoff, &print, &do_time);
 	if (ret < 0) {
 		goto end;
 	}

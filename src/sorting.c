@@ -134,7 +134,7 @@ int merge(const intmax_t *array, size_t begin, size_t middle, size_t end, intmax
 
 int merge_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer)
 {
-	size_t middle = (end - begin) / 2;
+	size_t middle;
 	if (end - begin < 2) {
 		return 0;
 	}

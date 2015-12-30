@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+
 #define RAND_FILE "/dev/urandom"
 
 int main(int argc, char **argv)

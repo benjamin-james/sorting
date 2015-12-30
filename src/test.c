@@ -3,7 +3,24 @@
 #include "sorting.h"
 #include "test.h"
 #include "util.h"
+int test_bogosort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff)
+{
+	struct timespec start, end;
+	intmax_t *array = NULL;
+	dup_array(orig_array, size, &array);
+	get_clock(&start);
+	bogosort(array, size);
+	get_clock(&end);
+	timespec_diff(start, end, diff);
+       	if (print) {
+		print_array(stdout, array, size);
+	}
+	if (array) {
+		free(array);
+	}
+	return 0;
 
+}
 int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff) {
 	struct tree *t;
 	struct timespec start, end;

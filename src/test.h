@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+int test_bogosort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);
+
 int test_treesort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);
 
 int test_heapsort(const intmax_t *orig_array, size_t size, bool print, struct timespec *diff);

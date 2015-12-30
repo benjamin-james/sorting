@@ -2,6 +2,32 @@
 #include <stdlib.h>
 #include "sorting.h"
 
+int shuffle(intmax_t *array, size_t array_size)
+{
+	size_t i, index;
+	for (i = array_size - 1; i > 0; i--) {
+		index = rand() % (i + 1);
+		SWAP(intmax_t, array[index], array[i]);
+	}
+	return 0;
+}
+
+int is_sorted(const intmax_t *array, size_t array_size)
+{
+	size_t i;
+	for (i = 1; i < array_size; i++) {
+		if (array[i] < array[i - 1]) {
+			return 0;
+		}
+	}
+	return 1;
+}
+int bogosort(intmax_t *array, size_t array_size)
+{
+	while (!is_sorted(array, array_size)) {
+		shuffle(array, array_size);
+	}
+}
 int treesort(const intmax_t *array, size_t array_size, struct tree **tree)
 {
 	size_t i;

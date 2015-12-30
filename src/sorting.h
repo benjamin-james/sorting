@@ -14,6 +14,8 @@
 	} while (0)
 #endif
 
+int shuffle(intmax_t *array, size_t array_size);
+int bogosort(intmax_t *array, size_t array_size);
 int insertion_sort(intmax_t *array, size_t size);
 int bubble_sort(intmax_t *array, size_t size);
 int merge_sort(intmax_t *array, size_t begin, size_t end, intmax_t *buffer);
